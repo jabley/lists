@@ -18,11 +18,17 @@ impl List {
     }
 
     pub fn pop(&mut self) -> Option<i32> {
-        match self.head {
-            Link::Empty => {}
-            Link::More(node) => {}
+        let result;
+        match &self.head {
+            Link::Empty => {
+                result = None;
+            }
+            Link::More(ref node) => {
+                result = Some(node.elem);
+                self.head = node.next;
+            }
         }
-        unimplemented!()
+        result
     }
 }
 
