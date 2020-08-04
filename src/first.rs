@@ -37,3 +37,8 @@ struct Node {
     elem: i32,
     next: Link,
 }
+
+mod test {
+    #[test]
+    fn basics() {}
+}
