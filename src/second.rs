@@ -103,7 +103,7 @@ pub struct IterMut<'a, T> {
 }
 
 impl<T> List<T> {
-    pub fn iter_mut(&self) -> IterMut<'_, T> {
+    pub fn iter_mut(&mut self) -> IterMut<'_, T> {
         IterMut {
             next: self.head.as_mut().map(|node| &mut **node),
         }
@@ -114,7 +114,7 @@ impl<'a, T> Iterator for IterMut<'a, T> {
     type Item = &'a mut T;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.next.map(|node| {
+        self.next.take().map(|node| {
             self.next = node.next.as_mut().map(|node| &mut **node);
             &mut node.elem
         })
@@ -197,5 +197,18 @@ mod test {
         assert_eq!(iter.next(), Some(&3));
         assert_eq!(iter.next(), Some(&2));
         assert_eq!(iter.next(), Some(&1));
+    }
+
+    #[test]
+    fn iter_mut() {
+        let mut list = List::new();
+        list.push(1);
+        list.push(2);
+        list.push(3);
+
+        let mut iter = list.iter_mut();
+        assert_eq!(iter.next(), Some(&mut 3));
+        assert_eq!(iter.next(), Some(&mut 2));
+        assert_eq!(iter.next(), Some(&mut 1));
     }
 }
