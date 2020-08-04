@@ -70,21 +70,29 @@ impl<T> Iterator for IntoIter<T> {
     }
 }
 
-pub struct Iter<T> {
-    next: Option<&Node<T>>,
+// Iter is generic over *some* lifetime, it doesn't care
+pub struct Iter<'a, T> {
+    next: Option<&'a Node<T>>,
 }
 
+// No lifetime here, List doesn't have any associated lifetimes
 impl<T> List<T> {
-    pub fn iter(&self) -> Iter<T> {
+    // We declare a fresh lifetime here for the *exact* borrow that
+    // creates the iter. Now &self needs to be valid as long as the
+    // Iter is around.
+    pub fn iter<'a>(&'a self) -> Iter<'a, T> {
         Iter {
             next: self.head.map(|node| &node),
         }
     }
 }
 
-impl<T> Iterator for Iter<T> {
-    type Item = &T;
+// We *do* have a lifetime here, because Iter has one that we need to define
+impl<'a, T> Iterator for Iter<'a, T> {
+    type Item = &'a T;
 
+    // None of this needs to change, handled by the above.
+    // Self continues to be incredibly hype and amazing
     fn next(&mut self) -> Option<Self::Item> {
         self.next.map(|node| {
             self.next = node.next.map(|node| &node);
