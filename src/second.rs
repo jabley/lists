@@ -95,8 +95,8 @@ mod test {
         assert_eq!(list.peek(), Some(&3));
         assert_eq!(list.peek_mut(), Some(&mut 3));
 
-        list.peek_mut().map(|&mut value| {
-            value = 42;
+        list.peek_mut().map(|value| {
+            *value = 42;
         });
 
         assert_eq!(list.peek(), Some(&42));
