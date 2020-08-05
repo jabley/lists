@@ -70,7 +70,7 @@ impl<T> List<T> {
                                       // total: -2 old, (no new)
                 }
             }
-            Rc::try_unwrap(old_head).unwrap().into_inner().elem
+            Rc::try_unwrap(old_head).ok().unwrap().into_inner().elem
         })
     }
 }
