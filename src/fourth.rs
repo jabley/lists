@@ -70,7 +70,7 @@ impl<T> List<T> {
                                       // total: -2 old, (no new)
                 }
             }
-            old_head.borrow_mut().elem
+            old_head.into_inner().elem
         })
     }
 }
