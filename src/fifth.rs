@@ -1,6 +1,6 @@
-pub struct List<T> {
+pub struct List<'a, T> {
     head: Link<T>,
-    tail: Option<&mut Node<T>>, // NEW!
+    tail: Option<&'a mut Node<T>>, // NEW!
 }
 
 type Link<T> = Option<Box<Node<T>>>;
@@ -10,7 +10,7 @@ struct Node<T> {
     next: Link<T>,
 }
 
-impl<T> List<T> {
+impl<'a, T> List<'a, T> {
     pub fn new() -> Self {
         List {
             head: None,
