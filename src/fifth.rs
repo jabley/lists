@@ -41,4 +41,17 @@ impl<'a, T> List<'a, T> {
 
         self.tail = new_tail;
     }
+
+    pub fn pop(&'a mut self) -> Option<T> {
+        // Grab the list's current head
+        self.head.take().map(|head| {
+            let head = *head;
+            self.head = head.next;
+            // If we're out of `head`, make sure to set the tail to `None`.
+            if self.head.is_none() {
+                self.tail = None;
+            }
+            head.elem
+        })
+    }
 }
