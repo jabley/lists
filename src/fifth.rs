@@ -29,7 +29,7 @@ impl<T> List<T> {
         // .is_null checks for null, equivalent to checking for None
         if !self.tail.is_null() {
             // If the old tail existed, update it to point to the new tail
-            self.tail.next = Some(new_tail);
+            (*self.tail).next = Some(new_tail);
         } else {
             // Otherwise, update the head to point to it
             self.head = Some(new_tail);
