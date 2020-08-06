@@ -169,7 +169,11 @@ impl<'a, T> Iterator for Iter<'a, T> {
     fn next(&mut self) -> Option<Self::Item> {
         self.0.take().map(|node_ref| {
             let (next, elem) = Ref::map_split(node_ref, |node| (&node.next, &node.elem));
-            self.0 = next.as_ref().map(|head| head.borrow());
+            self.0 = if next.is_some() {
+                Some(Ref::map(next, |next| &**next.as_ref().unwrap()))
+            } else {
+                None
+            };
             elem
         })
     }
