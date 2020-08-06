@@ -156,6 +156,14 @@ impl<T> DoubleEndedIterator for IntoIter<T> {
     }
 }
 
+pub struct Iter<'a, T>(Option<Ref<'a, Node<T>>>);
+
+impl<T> List<T> {
+    pub fn iter(&self) -> Iter<T> {
+        Iter(self.head.as_ref().map(|head| head.borrow()))
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::List;
