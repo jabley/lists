@@ -74,10 +74,9 @@ impl<T> List<T> {
         })
     }
 
-    pub fn peek_front(&self) -> Option<&T> {
+    pub fn peek_front(&self) -> Option<Ref<T>> {
         self.head.as_ref().map(|node| {
-            // BORROW!!!!
-            &node.borrow().elem
+            node.borrow()
         })
     }
 }
